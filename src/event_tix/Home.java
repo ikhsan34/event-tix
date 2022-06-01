@@ -24,11 +24,28 @@ public class Home extends javax.swing.JFrame {
     public Home(String id) {
         this.id = id;
         initComponents();
-        event_table();
-        transaksi_table();
+        eventTable();
+        transaksiTable();
+        userDetail();
     }
     
-    private void event_table() {
+    private void userDetail() {
+        try {
+            String sql = "SELECT * FROM users WHERE id = '" + id + "'";
+            java.sql.Connection conn = (Connection)DBConnect.configDB();
+            java.sql.Statement statement = conn.createStatement();
+            java.sql.ResultSet result = statement.executeQuery(sql);
+            
+            if(result.next()){
+                String name = result.getString(2);
+                nameLabel.setText(name);
+            }
+        } catch(Exception e) {
+            
+        }
+    }
+    
+    private void eventTable() {
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Judul");
         table.addColumn("Quota");
@@ -52,7 +69,7 @@ public class Home extends javax.swing.JFrame {
         }
     }
     
-    private void transaksi_table() {
+    private void transaksiTable() {
         DefaultTableModel table = new DefaultTableModel();
         table.addColumn("Event");
         table.addColumn("Deadline Pembayaran");
